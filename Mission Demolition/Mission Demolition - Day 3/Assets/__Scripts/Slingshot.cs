@@ -3,33 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Slingshot : MonoBehaviour {
-    private static Slingshot S;
     // class level variable
     // compiler attribute - gives specific instructions to the compiler or Unity
     // tells Unity to create a header in the Inspector
     [Header("Set in Inspector")]
     public GameObject prefabProjectile;     // set in Inspector
     public float velocityMult = 8f;
-    private Rigidbody projectileRigidbody;
-    static public Vector3 LAUNCH_POS
-    {
-        get
-        {
-            if (S == null) return Vector3.zero;
-            return S.launchPos;
-        }
-    }
+
     [Header("Set dynamically")]
     public GameObject launchPoint;          // 3d world pos of launchPoint
 
     public Vector3 launchPos;
     public GameObject projectile;
     public bool aimingMode;
-    //private Rigidbody projectileRigidbody;
+    private Rigidbody projectileRigidbody;
 
     void Awake()
     {
-        S = this;
         Transform launchPointTrans = transform.Find("LaunchPoint");
         launchPoint = launchPointTrans.gameObject;
         launchPoint.SetActive(false);
@@ -68,9 +58,6 @@ public class Slingshot : MonoBehaviour {
             projectileRigidbody.velocity = -mouseDelta * velocityMult;
             FollowCam.POI = projectile;         // set POI for our camera
             projectile = null;
-
-            MissionDemolition.ShotFired();
-            ProjectileLine.S.poi = projectile;
         }  // end of if
     }
     void OnMouseDown()
