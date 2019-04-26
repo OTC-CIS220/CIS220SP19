@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 
 public class TileCamera : MonoBehaviour
@@ -67,8 +68,28 @@ public class TileCamera : MonoBehaviour
         print("Parsed " + SPRITES.Length + " sprites.");
         print("Map size: " + W + " wide by " + H + " high ");
 
+        ShowMap();
     }
 
+    void ShowMap()
+    {
+        TILES = new Tile[W, H];
+
+        // run through the entire map and instantiate Tiles where necessary
+        for (int j = 0; j < H; j++)
+        {
+            for (int i = 0; i < W; i++)
+            {
+                if (MAP[i, j] != 0)
+                {
+                    Tile ti = Instantiate<Tile>(tilePrefab);
+                    ti.transform.SetParent(TILE_ANCHOR);
+                    ti.SetTile(i, j);
+                    TILES[i, j] = ti;
+                } // end of if
+            }// end of inner for
+        }  // end of outer for
+    }
     static public int GET_MAP(int x, int y)
     {
         if (x < 0 || x >= W || y < 0 || y >= H)
